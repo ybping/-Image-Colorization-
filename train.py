@@ -47,7 +47,7 @@ def validate(val_loader, model, criterion, epoch):
 
     batch_time, data_time, losses = AverageMeter(), AverageMeter(), AverageMeter()
     start_time = time.time()
-    save_sample_image = True
+    save_sample_image = False
     for i, (img_l, img_ab, size) in enumerate(val_loader):
         if IS_GPU_AVALIABLE:
             img_l = img_l.cuda()
@@ -96,12 +96,14 @@ def run(train_loader, val_loader, model, criterion, optiomizer):
     best_losses = 1e10
     for epoch in range(const.EPOCHS):
         train(train_loader, model, criterion, optiomizer, epoch)
+        checkpoints = 'checkpoints/train-model-epoch-{}-losses-{:.3f}.pth'.format(epoch+1,losses)
+        torch.save(model.state_dict(), checkpoints)
         with torch.no_grad():
             losses = validate(val_loader, model, criterion, epoch)
 
         if losses < best_losses:
             best_losses = losses
-            checkpoints = 'checkpoints/model-epoch-{}-losses-{:.3f}.pth'.format(epoch+1,losses)
+            checkpoints = 'checkpoints/best-model-epoch-{}-losses-{:.3f}.pth'.format(epoch+1,losses)
             torch.save(model.state_dict(), checkpoints)
 
 

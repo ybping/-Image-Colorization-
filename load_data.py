@@ -4,9 +4,6 @@ import const
 import skimage.color as color
 import utils
 from torchvision import datasets, transforms
-import os
-
-os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 class GraysacleImageFolder(datasets.ImageFolder):
     def __getitem__(self, index):
