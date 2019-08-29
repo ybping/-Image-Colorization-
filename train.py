@@ -96,7 +96,7 @@ def run(train_loader, val_loader, model, criterion, optiomizer):
     best_losses = 1e10
     for epoch in range(const.EPOCHS):
         train(train_loader, model, criterion, optiomizer, epoch)
-        checkpoints = 'checkpoints/train-model-epoch-{}-losses-{:.3f}.pth'.format(epoch+1,losses)
+        checkpoints = 'checkpoints/train-model-epoch-{}.pth'.format(epoch+1)
         torch.save(model.state_dict(), checkpoints)
         with torch.no_grad():
             losses = validate(val_loader, model, criterion, epoch)
